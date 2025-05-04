@@ -1,0 +1,254 @@
+✅ Q1. Explain the working of a Python interpreter with a diagram (10 Marks)
+Python is a high-level interpreted language, which means that it executes instructions line-by-line through an interpreter rather than compiling the entire code into machine language first.
+
+➤ Step-by-step process:
+Source Code (.py file):
+The programmer writes human-readable instructions in Python. These are saved with a .py extension.
+
+Tokenizer (Lexical Analysis):
+The Python interpreter reads the source code and breaks it into tokens such as keywords, operators, literals, etc. This is the first stage of analysis.
+
+Parser (Syntax Analysis):
+The parser checks whether the syntax of the code follows Python grammar. If errors are found, the interpreter throws a SyntaxError.
+
+Bytecode Generation:
+After successful parsing, Python translates the code into bytecode, which is a low-level intermediate representation of the code, stored in .pyc files inside the __pycache__ folder.
+
+Python Virtual Machine (PVM):
+The PVM is responsible for executing the bytecode line-by-line. It is platform-independent and handles memory management, runtime execution, and error handling.
+
+➤ Advantages of this process:
+Easy to debug (line-by-line)
+
+Cross-platform compatibility
+
+Efficient memory and error management
+
+➤ Diagram (describe this if no image allowed):
+scss
+Copy
+Edit
+Source Code (.py)
+      ↓
+  Tokenizer
+      ↓
+   Parser
+      ↓
+ Bytecode (.pyc)
+      ↓
+  Python Virtual Machine (PVM)
+      ↓
+ Output
+This layered approach is what makes Python dynamic, flexible, and beginner-friendly.
+
+✅ Q2. Differentiate interactive mode and script mode of Python
+Python programs can be executed in two major modes — Interactive Mode and Script Mode.
+
+➤ Interactive Mode:
+Executed line-by-line through a Python shell (REPL – Read, Evaluate, Print, Loop).
+
+Used mainly for quick testing and debugging.
+
+Code is not saved permanently unless copied manually.
+
+Output is shown immediately after execution.
+
+Invoked by typing python3 in the terminal.
+
+➤ Script Mode:
+The programmer writes a full program in a .py file using a text editor or IDE.
+
+The script can be saved and run multiple times.
+
+Suitable for larger and reusable programs.
+
+Requires manual saving and running via the terminal (python3 filename.py).
+
+➤ Comparison Table:
+Feature	Interactive Mode	Script Mode
+Execution	Line-by-line	Full program at once
+Reusability	Not reusable unless saved	Reusable
+Output	Immediate	Shown after script runs
+Use Case	Quick tests, debugging	Real-world programs, projects
+➤ Conclusion:
+While interactive mode is great for beginners and quick experimentation, script mode is more powerful and used in real development. Understanding both is important for effective Python programming.
+
+✅ Q3. Summarize various data types supported by Python
+Python supports dynamic typing, meaning variables do not need explicit declaration. The interpreter automatically detects the data type based on the value assigned.
+
+➤ Basic Data Types in Python:
+Numeric Types:
+
+int: Whole numbers (e.g., 10)
+
+float: Decimal numbers (e.g., 3.14)
+
+complex: Complex numbers with real and imaginary parts (e.g., 2 + 3j)
+
+Boolean Type:
+
+bool: Represents True or False, used in logical operations.
+
+String Type:
+
+str: A sequence of Unicode characters, used to store text (e.g., "Hello").
+
+Sequence Types:
+
+list: Ordered and mutable collection (e.g., [1, 2, 3])
+
+tuple: Ordered and immutable (e.g., (4, 5, 6))
+
+range: Immutable sequence of numbers, often used in loops.
+
+Set Types:
+
+set: Unordered collection of unique elements.
+
+frozenset: Immutable version of a set.
+
+Mapping Type:
+
+dict: Collection of key-value pairs (e.g., {"name": "John"})
+
+Binary Types:
+
+bytes, bytearray, and memoryview are used for binary data handling.
+
+➤ Python’s Flexibility:
+Python automatically assigns and manages memory.
+
+You can use type() function to check the type.
+
+Python allows type casting (conversion between types) using int(), str(), float() etc.
+
+➤ Conclusion:
+These data types form the foundation of Python programming. Mastery over them allows the programmer to handle any kind of data manipulation, storage, and computation efficiently.
+
+✅ Q4. Why are variables required in Python? How can a variable’s value be changed?
+➤ Definition of Variable:
+A variable in Python is a name that refers to a memory location where a value is stored. Variables allow programmers to store data, retrieve it, and manipulate it when needed.
+
+➤ Why variables are required:
+Data storage: Variables store temporary data for use throughout the program.
+
+Reusability: Values stored in variables can be reused in expressions, conditions, and functions.
+
+Code readability: Named variables make code understandable and easier to debug.
+
+Flexibility: Values in variables can be changed dynamically during program execution.
+
+Interaction: Variables help in taking input from users and storing responses.
+
+➤ Characteristics of Python variables:
+Dynamically typed: You don’t need to declare the data type explicitly. Python figures it out based on the value assigned.
+
+Case-sensitive: Age and age are two different variables.
+
+Can change type: A variable can change from one type to another.
+
+➤ Changing variable values:
+In Python, variables are mutable (except immutable types like tuples or strings). A variable’s value can be changed at any point in the program.
+
+For example, a variable storing an integer can later store a string. Python automatically handles memory management and type reassignment.
+
+➤ Conclusion:
+Variables are the core building blocks of any program. Python’s dynamic typing system allows easy and intuitive use of variables, making it one of the most beginner-friendly languages.
+
+✅ Q5. What is a statement in Python? Explain assignment and print statements.
+➤ What is a Statement?
+A statement is an instruction that the Python interpreter can execute. Every line in Python is typically a statement, and it performs a specific action.
+
+➤ Types of Statements in Python:
+Assignment Statement
+
+Input/Output Statement
+
+Conditional Statement
+
+Looping Statement
+
+Import Statement
+
+Function Definition Statement
+
+etc.
+
+➤ Assignment Statement:
+Purpose: Used to assign a value to a variable.
+
+Syntax: variable = expression
+
+Characteristics:
+
+The right-hand side is evaluated first.
+
+The result is stored in the variable on the left.
+
+Supports multiple and chained assignments.
+
+Example conceptually:
+
+x = 5 → assigns integer 5 to x.
+
+a, b = 10, 20 → multiple assignment.
+
+x = y = z = 100 → chained assignment.
+
+➤ Print Statement:
+Purpose: To display output to the user.
+
+Syntax: print(value(s))
+
+Features:
+
+Can print multiple items separated by commas.
+
+Automatically adds newline unless specified.
+
+Can print strings, variables, expressions, or formatted output.
+
+➤ Conclusion:
+Assignment and print statements are fundamental to every Python program. Assignments manage data internally, and print statements present results to the user. Understanding these two gives control over input/output and data flow in the program.
+
+✅ Q6. What is a Tuple? How does tuple assignment help in programming?
+➤ Tuple: Definition
+A tuple is an ordered and immutable sequence of elements. Tuples are similar to lists, but once created, their values cannot be changed.
+
+Syntax: my_tuple = (1, 2, 3)
+
+Tuple elements can be of mixed data types.
+
+Indexing and slicing are supported like lists.
+
+Used when data should not be modified (e.g., coordinates, database records).
+
+➤ Features of Tuples:
+Immutable: Cannot modify once created.
+
+Faster: More efficient than lists in terms of memory and performance.
+
+Hashable: Can be used as keys in dictionaries.
+
+Supports unpacking and nested tuples.
+
+➤ Tuple Assignment:
+Tuple assignment refers to the ability to assign values to multiple variables in a single line using tuple unpacking.
+
+Example idea:
+
+a, b = 10, 20 assigns 10 to a and 20 to b.
+
+Python internally creates a tuple on the right and unpacks it to the left.
+
+➤ Why useful in programming:
+Improves code readability
+
+Saves lines of code
+
+Supports function returns with multiple values
+
+Used in loops and iteration over multiple values
+
+➤ Conclusion:
+Tuples and tuple assignments simplify data grouping and multiple variable management. They are extensively used in data processing, function returns, and memory-efficient applications.

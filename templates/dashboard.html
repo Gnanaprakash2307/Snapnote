@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapNote - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-sticky-note"></i> SnapNote</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="{{ url_for('dashboard') }}" class="{% if not ocr and not summarize and not translate and not export_pdf %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('new_note') }}" class="{% if new_note %}active{% endif %}">
+                            <i class="fas fa-plus"></i> New Note
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('ocr') }}" class="{% if ocr %}active{% endif %}">
+                            <i class="fas fa-camera"></i> OCR
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('summarize') }}" class="{% if summarize %}active{% endif %}">
+                            <i class="fas fa-compress-alt"></i> Summarize
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('translate') }}" class="{% if translate %}active{% endif %}">
+                            <i class="fas fa-language"></i> Translate
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('export_pdf') }}" class="{% if export_pdf %}active{% endif %}">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="user-info">
+                    <span>Welcome, {{ session.username }}</span>
+                </div>
+            </header>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">
+                                {{ message }}
+                                <button type="button" class="close-btn">&times;</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Dashboard - Notes List -->
+            {% if not new_note and not view_note and not edit_note and not ocr and not summarize and not translate and not export_pdf %}
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Your Notes</h2>
+                        <a href="{{ url_for('new_note') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> New Note
+                        </a>
+                    </div>
+                    <div class="notes-container">
+                        {% if notes %}
+                            {% for note in notes %}
+                                <div class="note-card">
+                                    <h3>{{ note.title }}</h3>
+                                    <p>{{ note.content }}</p>
+                                    <div class="note-actions">
+                                        <a href="{{ url_for('view_note', filename=note.filename) }}" class="btn btn-small">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ url_for('edit_note', filename=note.filename) }}" class="btn btn-small">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ url_for('delete_note', filename=note.filename) }}" class="btn btn-small btn-danger"
+                                           onclick="return confirm('Are you sure you want to delete this note?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-sticky-note fa-3x"></i>
+                                <p>You don't have any notes yet.</p>
+                                <a href="{{ url_for('new_note') }}" class="btn btn-primary">Create your first note</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- New Note Form -->
+            {% if new_note %}
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Create New Note</h2>
+                    </div>
+                    <form action="{{ url_for('new_note') }}" method="post" class="form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" name="title" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea id="content" name="content" class="form-control" rows="15" required></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">Save Note</button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
+
+            <!-- View Note -->
+            {% if view_note %}
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>{{ note.title }}</h2>
+                        <div class="section-actions">
+                            <a href="{{ url_for('edit_note', filename=note.filename) }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{{ url_for('delete_note', filename=note.filename) }}" class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this note?')">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                    <div class="note-view">
+                        <div class="note-content">
+                            {{ note.content | replace('\n', '<br>') | safe }}
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Edit Note Form -->
+            {% if edit_note %}
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Edit Note</h2>
+                    </div>
+                    <form action="{{ url_for('edit_note', filename=note.filename) }}" method="post" class="form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" name="title" class="form-control" value="{{ note.title }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea id="content" name="content" class="form-control" rows="15" required>{{ note.content }}</textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">Update Note</button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
+
+            <!-- OCR Result -->
+            {% if ocr %}
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>OCR - Extracted Text</h2>
+                </div>
+                <div class="note-view">
+                    <div class="note-content">
+                        <pre>{{ extracted_text }}</pre>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Summarize Result -->
+            {% if summarize %}
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Summarized Text</h2>
+                </div>
+                <div class="note-view">
+                    <div class="note-content">
+                        <h3>Original Text:</h3>
+                        <p>{{ original_text }}</p>
+                        <h3>Summary:</h3>
+                        <p>{{ summary }}</p>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Translate Result -->
+            {% if translate %}
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Translation ({{ target_language|upper }})</h2>
+                </div>
+                <div class="note-view">
+                    <div class="note-content">
+                        <h3>Original Text:</h3>
+                        <p>{{ original_text }}</p>
+                        <h3>Translated Text:</h3>
+                        <p>{{ translated_text }}</p>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Export PDF Form -->
+            {% if export_pdf %}
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Export Note to PDF</h2>
+                </div>
+                <form action="{{ url_for('export_pdf') }}" method="post" class="form">
+                    <div class="form-group">
+                        <label for="title">Title for PDF</label>
+                        <input type="text" id="title" name="title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content for PDF</label>
+                        <textarea id="content" name="content" class="form-control" rows="15" required></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Generate PDF</button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+
+        </div> <!-- end of main-content -->
+    </div> <!-- end of app-container -->
+
+    <script>
+        // Close flash messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeButtons = document.querySelectorAll('.close-btn');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.parentElement.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
