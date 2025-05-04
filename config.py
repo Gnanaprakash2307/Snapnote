@@ -16,5 +16,5 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'password'
 
 # API Keys (replace with your actual API keys)
-GEMINI_API_KEY = "AIzaSyCQwmLtnOvE5i8MjdAAd0lYl51sPEC082k"  # For summarization
+GEMINI_API_KEY = "gemini-api-key"  # For summarization
 GOOGLE_TRANSLATE_API_KEY = "your-google-translate-key"  # For translation
